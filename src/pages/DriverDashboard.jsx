@@ -140,8 +140,8 @@ export default function DriverDashboard() {
                                 </span>
                                 {isCompleted ? (
                                     <span className={`text-xs font-bold px-2 py-1 rounded-full ${log.type === 'DELIVERY' ? 'bg-blue-100 text-toss-blue' :
-                                        log.type === 'PICKUP' ? 'bg-orange-100 text-orange-600' :
-                                            'bg-indigo-100 text-indigo-600'
+                                            log.type === 'PICKUP' ? 'bg-orange-100 text-orange-600' :
+                                                'bg-indigo-100 text-indigo-600'
                                         }`}>
                                         {getStatusLabel(log.type)}
                                     </span>
@@ -153,6 +153,15 @@ export default function DriverDashboard() {
                             </div>
 
                             <h3 className="text-xl font-bold text-slate-800 mb-1">{route.location.name}</h3>
+
+                            {/* Admin Memo Alert */}
+                            {route.admin_memo && (
+                                <div className="mb-3 bg-yellow-100 border border-yellow-200 text-yellow-800 px-3 py-2 rounded-xl text-sm font-bold flex items-start gap-2 animate-pulse">
+                                    <span>📢</span>
+                                    <span>{route.admin_memo}</span>
+                                </div>
+                            )}
+
                             <div className="flex items-center gap-1 text-slate-500 text-sm mb-4">
                                 <MapPin size={14} />
                                 {route.location.address}
