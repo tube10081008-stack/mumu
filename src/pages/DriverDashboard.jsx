@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { Button } from '../components/ui/Button';
-import { MapPin, KeyRound, MessageSquare, CheckCircle2, Truck, Edit3 } from 'lucide-react';
+import { MapPin, KeyRound, MessageSquare, Truck, Edit3 } from 'lucide-react';
 
 export default function DriverDashboard() {
     const [routes, setRoutes] = useState([]);
@@ -97,6 +96,16 @@ export default function DriverDashboard() {
         }
     };
 
+    // NAVER MAP INTEGRATION
+    const handleOpenMap = (address) => {
+        const encodedAddr = encodeURIComponent(address);
+        // Naver Map App Scheme
+        const appUrl = `nmap://search?query=${encodedAddr}&appname=mumu-delivery`;
+
+        // Redirect logic: Try app scheme
+        window.location.href = appUrl;
+    };
+
     const getStatusColor = (logs) => {
         if (!logs || logs.length === 0) return 'bg-white border-white hover:border-blue-100';
         const type = logs[0].type;
@@ -162,9 +171,18 @@ export default function DriverDashboard() {
                                 </div>
                             )}
 
-                            <div className="flex items-center gap-1 text-slate-500 text-sm mb-4">
-                                <MapPin size={14} />
-                                {route.location.address}
+                            <div
+                                onClick={(e) => {
+                                    e.stopPropagation(); // Stop modal opening
+                                    handleOpenMap(route.location.address);
+                                }}
+                                className="flex items-center gap-1 text-slate-500 text-sm mb-4 group cursor-pointer w-fit p-1 rounded-lg hover:bg-green-50 transition-colors"
+                            >
+                                <MapPin size={14} className="text-slate-400 group-hover:text-green-600" />
+                                <span className="group-hover:text-green-600 group-hover:underline decoration-2 underline-offset-2">{route.location.address}</span>
+                                <span className="text-[10px] bg-green-100 text-green-700 font-bold px-1.5 py-0.5 rounded border border-green-200 ml-1">
+                                    NAVI 🚀
+                                </span>
                             </div>
 
                             {isCompleted ? (
